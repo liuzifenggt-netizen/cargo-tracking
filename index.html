@@ -340,7 +340,9 @@ async function loadData(){
     if(!r.ok)throw new Error(r.status);
     const j=await r.json();
     fileSha=j.sha;
-    const d=JSON.parse(atob(j.content.replace(/\n/g,'')));
+    const raw=j.content.replace(/\n/g,'');
+    const bytes=Uint8Array.from(atob(raw),c=>c.charCodeAt(0));
+    const d=JSON.parse(new TextDecoder('utf-8').decode(bytes));
     items=d.items||[];
     setSync('ok','已同步 · '+new Date().toLocaleTimeString('zh-CN'));
     render();updateStats();
