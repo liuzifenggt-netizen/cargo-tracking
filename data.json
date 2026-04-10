@@ -2,9 +2,7 @@
   "items": [
     {
       "id": 2,
-      "name": "è½®è",
-      "shipping": "",
-      "usedOn": "å¯ç¹è½®å¼æææº",
+      "name": "刘子峰",
       "nameEn": "Tire",
       "spec": "16.9-34",
       "unit": "ä¸ª",
@@ -14,7 +12,7 @@
       "applyDate": "2025-10-24",
       "purchaseDate": "",
       "qtyActual": "",
-      "unitPrice": "",
+      "usedOn": "å¯ç¹è½®å¼æææº",
       "containerNo": "",
       "arrivalPort": "TXGU5733020",
       "arrivalFactory": "TEMU3206006",
@@ -3718,5 +3716,5 @@
       "inWarehouse": ""
     }
   ],
-  "lastUpdated": "2026-04-10T15:04:22.016Z"
+  "lastUpdated": "2026-04-10T15:04:43.432Z"
 }
