@@ -14,30 +14,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 .sync-status{font-size:12px;color:#aaa}
 .sync-status.ok{color:#4caf50}.sync-status.err{color:#f44336}.sync-status.loading{color:#ff9800}
 .container{max-width:1200px;margin:0 auto;padding:20px 16px}
-/* 登录页 */
-.login-wrap{display:flex;align-items:center;justify-content:center;min-height:70vh}
-.login-box{background:#fff;border-radius:14px;border:1px solid #e8e8e8;padding:36px 32px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.07)}
-.login-box h2{font-size:18px;font-weight:600;margin-bottom:6px}
-.login-box p{font-size:13px;color:#888;margin-bottom:24px;line-height:1.6}
-.login-box input{width:100%;font-size:13px;padding:10px 13px;border:1px solid #ddd;border-radius:8px;font-family:inherit;margin-bottom:12px}
-.login-box input:focus{outline:none;border-color:#1a5fa8;box-shadow:0 0 0 3px rgba(26,95,168,0.1)}
-.login-err{font-size:12px;color:#f44336;margin-bottom:10px;display:none}
-/* 统计 */
-.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
-.stat{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e8e8e8;cursor:pointer;transition:all 0.15s}
-.stat:hover,.stat.active{border-color:#1a5fa8;box-shadow:0 0 0 2px rgba(26,95,168,0.15)}
-.stat.active{background:#f0f6ff}
-.stat-label{font-size:11px;color:#888;margin-bottom:4px}
-.stat-value{font-size:22px;font-weight:700}
-/* 操作台 */
-.op-card{background:#fff;border-radius:10px;border:1px solid #e8e8e8;padding:16px 20px;margin-bottom:16px}
-.op-title{font-size:12px;font-weight:600;color:#888;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
-.op-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
-.op-group{display:flex;flex-direction:column;gap:5px}
-.op-group label{font-size:12px;color:#888;font-weight:500}
-.op-group input{font-size:13px;padding:8px 12px;border:1px solid #ddd;border-radius:8px;width:240px;font-family:inherit}
-.op-group input:focus{outline:none;border-color:#1a5fa8;box-shadow:0 0 0 3px rgba(26,95,168,0.1)}
-/* 按钮 */
+.setup-wrap{display:flex;align-items:center;justify-content:center;min-height:80vh}
+.setup-box{background:#fff;border-radius:14px;border:1px solid #e8e8e8;padding:36px 32px;width:100%;max-width:480px;box-shadow:0 4px 24px rgba(0,0,0,0.07)}
+.setup-box h2{font-size:18px;font-weight:600;margin-bottom:8px}
+.setup-box .desc{font-size:13px;color:#888;margin-bottom:24px;line-height:1.7}
+.setup-box .step{background:#f8f8f8;border-radius:8px;padding:12px 14px;margin-bottom:16px;font-size:13px;line-height:1.7}
+.setup-box .step strong{color:#1a1a1a}
+.setup-box input{width:100%;font-size:13px;padding:10px 13px;border:1px solid #ddd;border-radius:8px;font-family:monospace;margin-bottom:8px}
+.setup-box input:focus{outline:none;border-color:#1a5fa8;box-shadow:0 0 0 3px rgba(26,95,168,0.1)}
+.setup-err{font-size:12px;color:#f44336;margin-bottom:10px;min-height:18px}
 .btn{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;font-size:13px;border:1px solid #ddd;border-radius:8px;cursor:pointer;background:#fff;color:#1a1a1a;font-family:inherit;transition:all 0.15s;white-space:nowrap;font-weight:500}
 .btn:hover{background:#f5f5f5}
 .btn.primary{background:#1a5fa8;color:#fff;border-color:#1a5fa8}
@@ -48,7 +33,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei
 .btn.orange:hover{background:#bf360c}
 .btn.small{padding:5px 11px;font-size:12px}
 .btn.full{width:100%;justify-content:center;padding:10px}
-/* 主卡片 */
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
+.stat{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e8e8e8;cursor:pointer;transition:all 0.15s}
+.stat:hover,.stat.active{border-color:#1a5fa8;box-shadow:0 0 0 2px rgba(26,95,168,0.15)}
+.stat.active{background:#f0f6ff}
+.stat-label{font-size:11px;color:#888;margin-bottom:4px}
+.stat-value{font-size:22px;font-weight:700}
+.op-card{background:#fff;border-radius:10px;border:1px solid #e8e8e8;padding:16px 20px;margin-bottom:16px}
+.op-title{font-size:12px;font-weight:600;color:#888;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
+.op-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.op-group{display:flex;flex-direction:column;gap:5px}
+.op-group label{font-size:12px;color:#888;font-weight:500}
+.op-group input{font-size:13px;padding:8px 12px;border:1px solid #ddd;border-radius:8px;width:240px;font-family:inherit}
+.op-group input:focus{outline:none;border-color:#1a5fa8;box-shadow:0 0 0 3px rgba(26,95,168,0.1)}
 .main-card{background:#fff;border-radius:10px;border:1px solid #e8e8e8}
 .card-toolbar{padding:14px 16px;border-bottom:1px solid #f0f0f0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .card-toolbar input,.card-toolbar select{font-size:13px;padding:7px 11px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a;height:34px;font-family:inherit}
@@ -61,7 +58,6 @@ tr:last-child td{border-bottom:none}
 tr:hover td{background:#fafafa}
 .item-name{font-weight:500}
 .item-spec{font-size:11px;color:#aaa;margin-top:1px}
-/* 进度条 */
 .stage-wrap{display:flex;align-items:center;gap:2px}
 .stage{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:44px}
 .stage-dot{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;border:2px solid #e0e0e0;background:#fff;color:#ccc}
@@ -72,7 +68,6 @@ tr:hover td{background:#fafafa}
 .stage-label.active{color:#1a5fa8;font-weight:600}
 .stage-line{width:12px;height:2px;background:#e0e0e0;margin-bottom:13px;flex-shrink:0}
 .stage-line.done{background:#2e7d32}
-/* 徽章 */
 .badge{display:inline-flex;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
 .badge.s0{background:#f5f5f5;color:#999}
 .badge.s1{background:#fff3e0;color:#e65100}
@@ -82,7 +77,6 @@ tr:hover td{background:#fafafa}
 .badge.s5{background:#e0f2f1;color:#00695c}
 .container-tag{font-size:11px;background:#f0f0f0;color:#555;padding:2px 7px;border-radius:4px;font-family:monospace}
 .empty{text-align:center;padding:48px;color:#aaa;font-size:13px}
-/* 弹窗 */
 .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;align-items:center;justify-content:center;padding:16px}
 .modal-overlay.open{display:flex}
 .modal{background:#fff;border-radius:14px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
@@ -101,10 +95,10 @@ tr:hover td{background:#fafafa}
 .detail-row:last-child{border-bottom:none}
 .detail-label{font-size:12px;color:#999;width:100px;flex-shrink:0}
 .detail-value{font-size:13px;flex:1}
-/* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:all 0.25s;pointer-events:none}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 #main-app{display:none}
+#setup-page{display:none}
 @media(max-width:700px){.stats{grid-template-columns:repeat(3,1fr)}.form-grid{grid-template-columns:1fr}.op-group input{width:180px}}
 </style>
 </head>
@@ -117,20 +111,27 @@ tr:hover td{background:#fafafa}
   </div>
   <div class="topbar-right">
     <span class="sync-status" id="sync-status"></span>
-    <button class="btn small" id="btn-add" onclick="openAddModal()" style="display:none">＋ 新增物料</button>
-    <button class="btn small" onclick="logout()" id="btn-logout" style="display:none">退出</button>
+    <button class="btn small" onclick="openAddModal()" id="btn-add" style="display:none">＋ 新增物料</button>
+    <button class="btn small" onclick="clearToken()" id="btn-logout" style="display:none" title="重新配置">⚙ 设置</button>
   </div>
 </div>
 
-<!-- 登录页 -->
-<div class="container" id="login-page">
-  <div class="login-wrap">
-    <div class="login-box">
-      <h2>登录系统</h2>
-      <p>请输入访问密码进入采购跟踪系统。<br>国内同事和坦桑同事使用同一密码。</p>
-      <input type="password" id="login-pwd" placeholder="输入访问密码" onkeydown="if(event.key==='Enter')doLogin()">
-      <div class="login-err" id="login-err">密码错误，请重试</div>
-      <button class="btn primary full" onclick="doLogin()">进入系统</button>
+<!-- 初始配置页 -->
+<div class="container" id="setup-page">
+  <div class="setup-wrap">
+    <div class="setup-box">
+      <h2>首次配置</h2>
+      <div class="desc">需要输入GitHub Token才能读写数据。Token只存在你的浏览器本地，不会上传到任何地方。</div>
+      <div class="step">
+        <strong>如何获取Token：</strong><br>
+        1. 打开 github.com → 右上角头像 → Settings<br>
+        2. 左侧最底部 Developer settings<br>
+        3. Personal access tokens → Tokens (classic)<br>
+        4. Generate new token → 勾选 repo → 生成并复制
+      </div>
+      <input type="password" id="setup-token" placeholder="粘贴 ghp_ 开头的Token" autocomplete="off">
+      <div class="setup-err" id="setup-err"></div>
+      <button class="btn primary full" onclick="saveToken()">确认并进入系统</button>
     </div>
   </div>
 </div>
@@ -278,78 +279,81 @@ const GITHUB_OWNER = 'liuzifenggt-netizen';
 const GITHUB_REPO  = 'cargo-tracking';
 const GITHUB_FILE  = 'data.json';
 const API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
-// 访问密码（可自行修改）
-const ACCESS_PWD = 'dazhong2024';
-// Token 拆分存放，避免被GitHub扫描（实际拼合后使用）
-const TK = ['ghp_YDCFOg', 'pce2rpcQV3NRw', 'UdE2Cs4EPgS0lFd5s'];
+const TOKEN_KEY = 'dz_gh_token';
 
 let items = [], fileSha = '', editId = null;
 
-function getToken(){ return TK.join(''); }
+function getToken(){ return localStorage.getItem(TOKEN_KEY)||''; }
+
 function toast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
 function setSync(s,msg){const el=document.getElementById('sync-status');el.textContent=msg;el.className='sync-status '+s;}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-// 登录
-function doLogin(){
-  const pwd = document.getElementById('login-pwd').value;
-  if(pwd === ACCESS_PWD){
-    localStorage.setItem('dz_auth', ACCESS_PWD);
-    showApp();
-  } else {
-    document.getElementById('login-err').style.display='block';
+async function saveToken(){
+  const tk=document.getElementById('setup-token').value.trim();
+  if(!tk.startsWith('ghp_')&&!tk.startsWith('github_pat_')){
+    document.getElementById('setup-err').textContent='Token格式不对，应以 ghp_ 开头';return;
   }
+  document.getElementById('setup-err').textContent='验证中...';
+  // 测试token是否有效
+  const r=await fetch(API_BASE,{headers:{'Authorization':'token '+tk,'Accept':'application/vnd.github.v3+json'}});
+  if(r.status===401||r.status===403){
+    document.getElementById('setup-err').textContent='Token无效或权限不足，请重新生成';return;
+  }
+  if(!r.ok&&r.status!==404){
+    document.getElementById('setup-err').textContent='验证失败: '+r.status;return;
+  }
+  localStorage.setItem(TOKEN_KEY, tk);
+  document.getElementById('setup-err').textContent='';
+  showApp();
 }
-function logout(){
-  localStorage.removeItem('dz_auth');
-  document.getElementById('main-app').style.display='none';
-  document.getElementById('login-page').style.display='block';
-  document.getElementById('btn-add').style.display='none';
-  document.getElementById('btn-logout').style.display='none';
+
+function clearToken(){
+  if(confirm('重新配置Token？'))localStorage.removeItem(TOKEN_KEY),location.reload();
 }
+
 function showApp(){
-  document.getElementById('login-page').style.display='none';
+  document.getElementById('setup-page').style.display='none';
   document.getElementById('main-app').style.display='block';
   document.getElementById('btn-add').style.display='';
   document.getElementById('btn-logout').style.display='';
   loadData();
 }
 
-// 状态
 function getStatus(item){
-  if(item.inWarehouse) return 5;
-  if(item.arrivalFactory) return 4;
-  if(item.arrivalPort) return 3;
-  if(item.containerNo) return 2;
-  if(item.purchaseDate) return 1;
+  if(item.inWarehouse)return 5;
+  if(item.arrivalFactory)return 4;
+  if(item.arrivalPort)return 3;
+  if(item.containerNo)return 2;
+  if(item.purchaseDate)return 1;
   return 0;
 }
 const SL=['待采购','已采购','已装船','到达DSM','到达工厂','已入库'];
 const SI=['🛒','✅','🚢','⚓','🏭','🏠'];
 const SC=['s0','s1','s2','s3','s4','s5'];
 
-// GitHub API
 async function loadData(){
   setSync('loading','加载中...');
   try{
     const r=await fetch(API_BASE,{headers:{'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json'}});
-    if(!r.ok) throw new Error(r.status);
+    if(r.status===401||r.status===403){setSync('err','Token已失效，请点设置重新配置');return;}
+    if(!r.ok)throw new Error(r.status);
     const j=await r.json();
     fileSha=j.sha;
     const d=JSON.parse(atob(j.content.replace(/\n/g,'')));
     items=d.items||[];
     setSync('ok','已同步 · '+new Date().toLocaleTimeString('zh-CN'));
-    render(); updateStats();
+    render();updateStats();
   }catch(e){setSync('err','加载失败: '+e.message);}
 }
+
 async function saveData(){
   setSync('loading','保存中...');
   try{
     const content=btoa(unescape(encodeURIComponent(JSON.stringify({items,lastUpdated:new Date().toISOString()},null,2))));
-    const r=await fetch(API_BASE,{method:'PUT',headers:{'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'update data',content,sha:fileSha})});
-    if(!r.ok) throw new Error(r.status);
-    const j=await r.json();
-    fileSha=j.content.sha;
+    const r=await fetch(API_BASE,{method:'PUT',headers:{'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'update',content,sha:fileSha})});
+    if(!r.ok)throw new Error(r.status);
+    const j=await r.json();fileSha=j.content.sha;
     setSync('ok','已保存 · '+new Date().toLocaleTimeString('zh-CN'));
     return true;
   }catch(e){setSync('err','保存失败');toast('保存失败，请重试');return false;}
@@ -365,8 +369,7 @@ function updateStats(){
 function filterStatus(s){
   document.getElementById('filter-status').value=s;
   document.querySelectorAll('.stat').forEach(el=>el.classList.remove('active'));
-  const t=s===''?'stat-all':'stat-'+s;
-  const el=document.getElementById(t);if(el)el.classList.add('active');
+  const el=document.getElementById(s===''?'stat-all':'stat-'+s);if(el)el.classList.add('active');
   render();
 }
 
@@ -385,11 +388,10 @@ function renderStages(item){
   const stages=['采购','装船','到港','工厂','入库'];
   let h='<div class="stage-wrap">';
   for(let i=0;i<stages.length;i++){
-    const done=s>i+1||(s===i+1);
-    const active=s===i+1;
-    const cls=s>i+1?'done':(active?'active':'');
-    h+=`<div class="stage"><div class="stage-dot ${cls}">${s>i+1?'✓':i+1}</div><div class="stage-label ${cls}">${stages[i]}</div></div>`;
-    if(i<stages.length-1)h+=`<div class="stage-line ${s>i+1?'done':''}"></div>`;
+    const done=s>i+1;const active=s===i+1;
+    const cls=done?'done':(active?'active':'');
+    h+=`<div class="stage"><div class="stage-dot ${cls}">${done?'✓':i+1}</div><div class="stage-label ${cls}">${stages[i]}</div></div>`;
+    if(i<stages.length-1)h+=`<div class="stage-line ${done?'done':''}"></div>`;
   }
   return h+'</div>';
 }
@@ -422,7 +424,7 @@ function previewContainer(){
   const el=document.getElementById('preview-result');
   if(!val){el.textContent='';return;}
   const m=items.filter(i=>i.containerNo===val||i.arrivalPort===val||i.arrivalFactory===val);
-  el.innerHTML=m.length?`找到 <strong>${m.length}</strong> 条：${m.map(i=>i.name).join('、')}`:`<span style="color:#f44336">未找到箱号 "${val}" 对应的物料</span>`;
+  el.innerHTML=m.length?`找到 <strong>${m.length}</strong> 条：${m.map(i=>i.name).join('、')}`:`<span style="color:#f44336">未找到箱号 "${val}" 的物料</span>`;
 }
 
 async function batchUpdate(field){
@@ -513,8 +515,9 @@ function editItem(id){
 document.getElementById('form-modal').addEventListener('click',function(e){if(e.target===this)closeFormModal();});
 document.getElementById('view-modal').addEventListener('click',function(e){if(e.target===this)closeViewModal();});
 
-// 启动
-if(localStorage.getItem('dz_auth')===ACCESS_PWD){showApp();}
+// 启动判断
+if(getToken()){showApp();}
+else{document.getElementById('setup-page').style.display='block';}
 </script>
 </body>
 </html>
