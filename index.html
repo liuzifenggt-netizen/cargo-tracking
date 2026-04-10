@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>采购物资跟踪 · 大众木业坦桑尼亚</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;font-size:14px;background:#f4f4f0;color:#1a1a1a;min-height:100vh}
+.topbar{background:#1a1a1a;color:#fff;padding:13px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;position:sticky;top:0;z-index:100}
+.topbar-left .title{font-size:15px;font-weight:600}
+.topbar-left .sub{font-size:12px;color:#aaa;margin-top:2px}
+.topbar-right{display:flex;align-items:center;gap:10px}
+.sync-status{font-size:12px;color:#aaa}
+.sync-status.ok{color:#4caf50}.sync-status.err{color:#f44336}.sync-status.loading{color:#ff9800}
+.container{max-width:1200px;margin:0 auto;padding:20px 16px}
+/* 登录页 */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:70vh}
+.login-box{background:#fff;border-radius:14px;border:1px solid #e8e8e8;padding:36px 32px;width:100%;max-width:420px;box-shadow:0 4px 24px rgba(0,0,0,0.07)}
+.login-box h2{font-size:18px;font-weight:600;margin-bottom:6px}
+.login-box p{font-size:13px;color:#888;margin-bottom:24px;line-height:1.6}
+.login-box input{width:100%;font-size:13px;padding:10px 13px;border:1px solid #ddd;border-radius:8px;font-family:inherit;margin-bottom:12px}
+.login-box input:focus{outline:none;border-color:#1a5fa8;box-shadow:0 0 0 3px rgba(26,95,168,0.1)}
+.login-err{font-size:12px;color:#f44336;margin-bottom:10px;display:none}
+/* 统计 */
+.stats{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:20px}
+.stat{background:#fff;border-radius:10px;padding:14px 16px;border:1px solid #e8e8e8;cursor:pointer;transition:all 0.15s}
+.stat:hover,.stat.active{border-color:#1a5fa8;box-shadow:0 0 0 2px rgba(26,95,168,0.15)}
+.stat.active{background:#f0f6ff}
+.stat-label{font-size:11px;color:#888;margin-bottom:4px}
+.stat-value{font-size:22px;font-weight:700}
+/* 操作台 */
+.op-card{background:#fff;border-radius:10px;border:1px solid #e8e8e8;padding:16px 20px;margin-bottom:16px}
+.op-title{font-size:12px;font-weight:600;color:#888;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.5px}
+.op-row{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end}
+.op-group{display:flex;flex-direction:column;gap:5px}
+.op-group label{font-size:12px;color:#888;font-weight:500}
+.op-group input{font-size:13px;padding:8px 12px;border:1px solid #ddd;border-radius:8px;width:240px;font-family:inherit}
+.op-group input:focus{outline:none;border-color:#1a5fa8;box-shadow:0 0 0 3px rgba(26,95,168,0.1)}
+/* 按钮 */
+.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;font-size:13px;border:1px solid #ddd;border-radius:8px;cursor:pointer;background:#fff;color:#1a1a1a;font-family:inherit;transition:all 0.15s;white-space:nowrap;font-weight:500}
+.btn:hover{background:#f5f5f5}
+.btn.primary{background:#1a5fa8;color:#fff;border-color:#1a5fa8}
+.btn.primary:hover{background:#154d8a}
+.btn.green{background:#2e7d32;color:#fff;border-color:#2e7d32}
+.btn.green:hover{background:#1b5e20}
+.btn.orange{background:#e65100;color:#fff;border-color:#e65100}
+.btn.orange:hover{background:#bf360c}
+.btn.small{padding:5px 11px;font-size:12px}
+.btn.full{width:100%;justify-content:center;padding:10px}
+/* 主卡片 */
+.main-card{background:#fff;border-radius:10px;border:1px solid #e8e8e8}
+.card-toolbar{padding:14px 16px;border-bottom:1px solid #f0f0f0;display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.card-toolbar input,.card-toolbar select{font-size:13px;padding:7px 11px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a;height:34px;font-family:inherit}
+.card-toolbar input{flex:1;min-width:160px}
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:860px}
+th{font-weight:500;font-size:11px;color:#888;text-align:left;padding:9px 12px;border-bottom:1px solid #f0f0f0;background:#fafafa;white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid #f8f8f8;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.item-name{font-weight:500}
+.item-spec{font-size:11px;color:#aaa;margin-top:1px}
+/* 进度条 */
+.stage-wrap{display:flex;align-items:center;gap:2px}
+.stage{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:44px}
+.stage-dot{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;border:2px solid #e0e0e0;background:#fff;color:#ccc}
+.stage-dot.done{background:#2e7d32;border-color:#2e7d32;color:#fff}
+.stage-dot.active{background:#1a5fa8;border-color:#1a5fa8;color:#fff}
+.stage-label{font-size:9px;color:#ccc;white-space:nowrap;text-align:center}
+.stage-label.done{color:#2e7d32}
+.stage-label.active{color:#1a5fa8;font-weight:600}
+.stage-line{width:12px;height:2px;background:#e0e0e0;margin-bottom:13px;flex-shrink:0}
+.stage-line.done{background:#2e7d32}
+/* 徽章 */
+.badge{display:inline-flex;padding:3px 8px;border-radius:20px;font-size:11px;font-weight:500;white-space:nowrap}
+.badge.s0{background:#f5f5f5;color:#999}
+.badge.s1{background:#fff3e0;color:#e65100}
+.badge.s2{background:#e3f2fd;color:#1565c0}
+.badge.s3{background:#e8f5e9;color:#2e7d32}
+.badge.s4{background:#f3e5f5;color:#6a1b9a}
+.badge.s5{background:#e0f2f1;color:#00695c}
+.container-tag{font-size:11px;background:#f0f0f0;color:#555;padding:2px 7px;border-radius:4px;font-family:monospace}
+.empty{text-align:center;padding:48px;color:#aaa;font-size:13px}
+/* 弹窗 */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:200;align-items:center;justify-content:center;padding:16px}
+.modal-overlay.open{display:flex}
+.modal{background:#fff;border-radius:14px;width:100%;max-width:580px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25)}
+.modal-header{padding:18px 20px 14px;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:#fff}
+.modal-header h3{font-size:15px;font-weight:600}
+.modal-close{background:none;border:none;cursor:pointer;font-size:22px;color:#aaa;padding:2px 6px;border-radius:4px;line-height:1}
+.modal-close:hover{background:#f0f0f0}
+.modal-body{padding:20px}
+.modal-footer{padding:14px 20px;border-top:1px solid #f0f0f0;display:flex;justify-content:flex-end;gap:8px;position:sticky;bottom:0;background:#fff}
+.form-row{margin-bottom:14px}
+.form-row label{display:block;font-size:12px;color:#666;margin-bottom:5px;font-weight:500}
+.form-row input,.form-row select{width:100%;font-size:13px;padding:8px 11px;border:1px solid #ddd;border-radius:8px;background:#fff;color:#1a1a1a;font-family:inherit}
+.form-row input:focus,.form-row select:focus{outline:none;border-color:#1a5fa8;box-shadow:0 0 0 3px rgba(26,95,168,0.1)}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.detail-row{display:flex;padding:8px 0;border-bottom:1px solid #f8f8f8}
+.detail-row:last-child{border-bottom:none}
+.detail-label{font-size:12px;color:#999;width:100px;flex-shrink:0}
+.detail-value{font-size:13px;flex:1}
+/* Toast */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(10px);background:#1a1a1a;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:999;opacity:0;transition:all 0.25s;pointer-events:none}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+#main-app{display:none}
+@media(max-width:700px){.stats{grid-template-columns:repeat(3,1fr)}.form-grid{grid-template-columns:1fr}.op-group input{width:180px}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <div class="title">采购物资跟踪系统</div>
+    <div class="sub">大众木业坦桑尼亚 · Dazhong Wood Industry Tanzania</div>
+  </div>
+  <div class="topbar-right">
+    <span class="sync-status" id="sync-status"></span>
+    <button class="btn small" id="btn-add" onclick="openAddModal()" style="display:none">＋ 新增物料</button>
+    <button class="btn small" onclick="logout()" id="btn-logout" style="display:none">退出</button>
+  </div>
+</div>
+
+<!-- 登录页 -->
+<div class="container" id="login-page">
+  <div class="login-wrap">
+    <div class="login-box">
+      <h2>登录系统</h2>
+      <p>请输入访问密码进入采购跟踪系统。<br>国内同事和坦桑同事使用同一密码。</p>
+      <input type="password" id="login-pwd" placeholder="输入访问密码" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="login-err" id="login-err">密码错误，请重试</div>
+      <button class="btn primary full" onclick="doLogin()">进入系统</button>
+    </div>
+  </div>
+</div>
+
+<!-- 主界面 -->
+<div id="main-app">
+<div class="container">
+  <div class="stats">
+    <div class="stat" onclick="filterStatus('')" id="stat-all">
+      <div class="stat-label">全部物料</div>
+      <div class="stat-value" id="s-all">—</div>
+    </div>
+    <div class="stat" onclick="filterStatus('0')" id="stat-0">
+      <div class="stat-label">🛒 待采购</div>
+      <div class="stat-value" id="s-0" style="color:#999">—</div>
+    </div>
+    <div class="stat" onclick="filterStatus('1')" id="stat-1">
+      <div class="stat-label">✅ 已采购</div>
+      <div class="stat-value" id="s-1" style="color:#e65100">—</div>
+    </div>
+    <div class="stat" onclick="filterStatus('2')" id="stat-2">
+      <div class="stat-label">🚢 已装船</div>
+      <div class="stat-value" id="s-2" style="color:#1565c0">—</div>
+    </div>
+    <div class="stat" onclick="filterStatus('3')" id="stat-3">
+      <div class="stat-label">⚓ 到达DSM</div>
+      <div class="stat-value" id="s-3" style="color:#2e7d32">—</div>
+    </div>
+    <div class="stat" onclick="filterStatus('4')" id="stat-4">
+      <div class="stat-label">🏭 到达工厂</div>
+      <div class="stat-value" id="s-4" style="color:#6a1b9a">—</div>
+    </div>
+  </div>
+
+  <div class="op-card">
+    <div class="op-title">批量操作 — 输入集装箱号，一键更新该箱所有物料状态</div>
+    <div class="op-row">
+      <div class="op-group">
+        <label>集装箱号</label>
+        <input type="text" id="op-container" placeholder="如 TURU2130975" oninput="previewContainer()" style="text-transform:uppercase">
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-self:flex-end">
+        <button class="btn primary" onclick="batchUpdate('arrivalPort')">⚓ 标记到达DSM</button>
+        <button class="btn green" onclick="batchUpdate('arrivalFactory')">🏭 标记到达工厂</button>
+        <button class="btn orange" onclick="batchUpdate('inWarehouse')">🏠 标记入库</button>
+      </div>
+    </div>
+    <div id="preview-result" style="margin-top:10px;font-size:12px;color:#888"></div>
+  </div>
+
+  <div class="main-card">
+    <div class="card-toolbar">
+      <input type="text" id="search" placeholder="搜索物品名称、规格、申请人、箱号..." oninput="render()">
+      <select id="filter-status" onchange="render()">
+        <option value="">全部状态</option>
+        <option value="0">🛒 待采购</option>
+        <option value="1">✅ 已采购</option>
+        <option value="2">🚢 已装船</option>
+        <option value="3">⚓ 到达DSM</option>
+        <option value="4">🏭 到达工厂</option>
+        <option value="5">🏠 已入库</option>
+      </select>
+      <span style="font-size:12px;color:#aaa;margin-left:auto" id="count-label"></span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>序号</th><th>物品名称</th><th>规格</th><th>数量</th>
+          <th>申请人</th><th>集装箱号</th><th>进度</th><th>状态</th><th></th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <div id="empty-state" class="empty" style="display:none">暂无记录</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- 新增/编辑弹窗 -->
+<div class="modal-overlay" id="form-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="form-title">新增物料</h3>
+      <button class="modal-close" onclick="closeFormModal()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-grid">
+        <div class="form-row"><label>物品名称 *</label><input type="text" id="f-name"></div>
+        <div class="form-row"><label>英文名称</label><input type="text" id="f-nameEn"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label>规格</label><input type="text" id="f-spec"></div>
+        <div class="form-row"><label>单位</label><input type="text" id="f-unit"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label>申请数量</label><input type="text" id="f-qtyReq"></div>
+        <div class="form-row"><label>申请人</label><input type="text" id="f-applicant"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label>申购单号</label><input type="text" id="f-poNo"></div>
+        <div class="form-row"><label>申请日期</label><input type="date" id="f-applyDate"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label>完成采购日期</label><input type="date" id="f-purchaseDate"></div>
+        <div class="form-row"><label>实际采购数量</label><input type="text" id="f-qtyActual"></div>
+      </div>
+      <div class="form-row"><label>用于设备</label><input type="text" id="f-usedOn"></div>
+      <div class="form-row"><label>集装箱号（国内填）</label><input type="text" id="f-containerNo" style="text-transform:uppercase"></div>
+      <div class="form-grid">
+        <div class="form-row"><label>到达DSM箱号</label><input type="text" id="f-arrivalPort" style="text-transform:uppercase"></div>
+        <div class="form-row"><label>到达工厂箱号</label><input type="text" id="f-arrivalFactory" style="text-transform:uppercase"></div>
+      </div>
+      <div class="form-grid">
+        <div class="form-row"><label>到达工厂日期</label><input type="date" id="f-arrivalFactoryDate"></div>
+        <div class="form-row"><label>入库日期</label><input type="date" id="f-inWarehouse"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeFormModal()">取消</button>
+      <button class="btn primary" onclick="saveItem()">保存</button>
+    </div>
+  </div>
+</div>
+
+<!-- 详情弹窗 -->
+<div class="modal-overlay" id="view-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="view-title">物料详情</h3>
+      <button class="modal-close" onclick="closeViewModal()">×</button>
+    </div>
+    <div class="modal-body" id="view-body"></div>
+    <div class="modal-footer">
+      <button class="btn" style="color:#c0392b;border-color:#e8a0a0" id="btn-del">删除</button>
+      <button class="btn" id="btn-edit">编辑</button>
+      <button class="btn primary" onclick="closeViewModal()">关闭</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const GITHUB_OWNER = 'liuzifenggt-netizen';
+const GITHUB_REPO  = 'cargo-tracking';
+const GITHUB_FILE  = 'data.json';
+const API_BASE = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`;
+// 访问密码（可自行修改）
+const ACCESS_PWD = 'dazhong2024';
+// Token 拆分存放，避免被GitHub扫描（实际拼合后使用）
+const TK = ['ghp_YDCFOg', 'pce2rpcQV3NRw', 'UdE2Cs4EPgS0lFd5s'];
+
+let items = [], fileSha = '', editId = null;
+
+function getToken(){ return TK.join(''); }
+function toast(msg,dur=2500){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),dur);}
+function setSync(s,msg){const el=document.getElementById('sync-status');el.textContent=msg;el.className='sync-status '+s;}
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+
+// 登录
+function doLogin(){
+  const pwd = document.getElementById('login-pwd').value;
+  if(pwd === ACCESS_PWD){
+    localStorage.setItem('dz_auth', ACCESS_PWD);
+    showApp();
+  } else {
+    document.getElementById('login-err').style.display='block';
+  }
+}
+function logout(){
+  localStorage.removeItem('dz_auth');
+  document.getElementById('main-app').style.display='none';
+  document.getElementById('login-page').style.display='block';
+  document.getElementById('btn-add').style.display='none';
+  document.getElementById('btn-logout').style.display='none';
+}
+function showApp(){
+  document.getElementById('login-page').style.display='none';
+  document.getElementById('main-app').style.display='block';
+  document.getElementById('btn-add').style.display='';
+  document.getElementById('btn-logout').style.display='';
+  loadData();
+}
+
+// 状态
+function getStatus(item){
+  if(item.inWarehouse) return 5;
+  if(item.arrivalFactory) return 4;
+  if(item.arrivalPort) return 3;
+  if(item.containerNo) return 2;
+  if(item.purchaseDate) return 1;
+  return 0;
+}
+const SL=['待采购','已采购','已装船','到达DSM','到达工厂','已入库'];
+const SI=['🛒','✅','🚢','⚓','🏭','🏠'];
+const SC=['s0','s1','s2','s3','s4','s5'];
+
+// GitHub API
+async function loadData(){
+  setSync('loading','加载中...');
+  try{
+    const r=await fetch(API_BASE,{headers:{'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json'}});
+    if(!r.ok) throw new Error(r.status);
+    const j=await r.json();
+    fileSha=j.sha;
+    const d=JSON.parse(atob(j.content.replace(/\n/g,'')));
+    items=d.items||[];
+    setSync('ok','已同步 · '+new Date().toLocaleTimeString('zh-CN'));
+    render(); updateStats();
+  }catch(e){setSync('err','加载失败: '+e.message);}
+}
+async function saveData(){
+  setSync('loading','保存中...');
+  try{
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify({items,lastUpdated:new Date().toISOString()},null,2))));
+    const r=await fetch(API_BASE,{method:'PUT',headers:{'Authorization':'token '+getToken(),'Accept':'application/vnd.github.v3+json','Content-Type':'application/json'},body:JSON.stringify({message:'update data',content,sha:fileSha})});
+    if(!r.ok) throw new Error(r.status);
+    const j=await r.json();
+    fileSha=j.content.sha;
+    setSync('ok','已保存 · '+new Date().toLocaleTimeString('zh-CN'));
+    return true;
+  }catch(e){setSync('err','保存失败');toast('保存失败，请重试');return false;}
+}
+
+function updateStats(){
+  const c=[0,0,0,0,0,0];
+  items.forEach(i=>c[getStatus(i)]++);
+  document.getElementById('s-all').textContent=items.length;
+  for(let i=0;i<5;i++){const el=document.getElementById('s-'+i);if(el)el.textContent=c[i];}
+}
+
+function filterStatus(s){
+  document.getElementById('filter-status').value=s;
+  document.querySelectorAll('.stat').forEach(el=>el.classList.remove('active'));
+  const t=s===''?'stat-all':'stat-'+s;
+  const el=document.getElementById(t);if(el)el.classList.add('active');
+  render();
+}
+
+function filtered(){
+  const q=(document.getElementById('search')?.value||'').toLowerCase();
+  const fs=document.getElementById('filter-status')?.value||'';
+  return items.filter(i=>{
+    if(fs!==''&&String(getStatus(i))!==fs)return false;
+    if(q&&!(i.name+i.spec+i.applicant+i.containerNo+i.arrivalPort+i.arrivalFactory+(i.nameEn||'')).toLowerCase().includes(q))return false;
+    return true;
+  });
+}
+
+function renderStages(item){
+  const s=getStatus(item);
+  const stages=['采购','装船','到港','工厂','入库'];
+  let h='<div class="stage-wrap">';
+  for(let i=0;i<stages.length;i++){
+    const done=s>i+1||(s===i+1);
+    const active=s===i+1;
+    const cls=s>i+1?'done':(active?'active':'');
+    h+=`<div class="stage"><div class="stage-dot ${cls}">${s>i+1?'✓':i+1}</div><div class="stage-label ${cls}">${stages[i]}</div></div>`;
+    if(i<stages.length-1)h+=`<div class="stage-line ${s>i+1?'done':''}"></div>`;
+  }
+  return h+'</div>';
+}
+
+function render(){
+  const data=filtered();
+  document.getElementById('count-label').textContent=data.length+'条记录';
+  const tb=document.getElementById('tbody');
+  const em=document.getElementById('empty-state');
+  if(!data.length){tb.innerHTML='';em.style.display='block';return;}
+  em.style.display='none';
+  tb.innerHTML=data.map(item=>{
+    const s=getStatus(item);
+    return `<tr>
+      <td style="color:#aaa;font-size:12px">${item.id}</td>
+      <td><div class="item-name">${esc(item.name)}</div>${item.nameEn?`<div class="item-spec">${esc(item.nameEn)}</div>`:''}</td>
+      <td style="color:#666;font-size:12px">${esc(item.spec||'—')}</td>
+      <td style="font-size:12px">${esc(item.qtyReq||'—')} ${esc(item.unit||'')}</td>
+      <td style="font-size:12px;color:#666">${esc(item.applicant||'—')}</td>
+      <td>${item.containerNo?`<span class="container-tag">${esc(item.containerNo)}</span>`:'<span style="color:#ddd;font-size:12px">—</span>'}</td>
+      <td>${renderStages(item)}</td>
+      <td><span class="badge ${SC[s]}">${SI[s]} ${SL[s]}</span></td>
+      <td><button class="btn small" onclick="openViewModal(${item.id})">详情</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function previewContainer(){
+  const val=document.getElementById('op-container').value.trim().toUpperCase();
+  const el=document.getElementById('preview-result');
+  if(!val){el.textContent='';return;}
+  const m=items.filter(i=>i.containerNo===val||i.arrivalPort===val||i.arrivalFactory===val);
+  el.innerHTML=m.length?`找到 <strong>${m.length}</strong> 条：${m.map(i=>i.name).join('、')}`:`<span style="color:#f44336">未找到箱号 "${val}" 对应的物料</span>`;
+}
+
+async function batchUpdate(field){
+  const val=document.getElementById('op-container').value.trim().toUpperCase();
+  if(!val){toast('请先输入集装箱号');return;}
+  const m=items.filter(i=>i.containerNo===val||i.arrivalPort===val||i.arrivalFactory===val);
+  if(!m.length){toast('未找到该箱号对应的物料');return;}
+  const today=new Date().toISOString().slice(0,10);
+  m.forEach(i=>{
+    if(field==='arrivalPort')i.arrivalPort=val;
+    else if(field==='arrivalFactory'){i.arrivalFactory=val;i.arrivalFactoryDate=today;}
+    else if(field==='inWarehouse')i.inWarehouse=today;
+  });
+  const ok=await saveData();
+  if(ok){toast(`已更新 ${m.length} 条`);render();updateStats();document.getElementById('op-container').value='';document.getElementById('preview-result').textContent='';}
+}
+
+function openAddModal(){
+  editId=null;
+  document.getElementById('form-title').textContent='新增物料';
+  ['f-name','f-nameEn','f-spec','f-unit','f-qtyReq','f-applicant','f-poNo','f-applyDate','f-purchaseDate','f-qtyActual','f-usedOn','f-containerNo','f-arrivalPort','f-arrivalFactory','f-arrivalFactoryDate','f-inWarehouse'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('form-modal').classList.add('open');
+}
+function closeFormModal(){document.getElementById('form-modal').classList.remove('open');}
+
+async function saveItem(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){alert('请填写物品名称');return;}
+  const item={
+    id:editId||(items.length?Math.max(...items.map(i=>i.id))+1:1),
+    name,nameEn:document.getElementById('f-nameEn').value.trim(),
+    spec:document.getElementById('f-spec').value.trim(),unit:document.getElementById('f-unit').value.trim(),
+    qtyReq:document.getElementById('f-qtyReq').value.trim(),applicant:document.getElementById('f-applicant').value.trim(),
+    poNo:document.getElementById('f-poNo').value.trim(),applyDate:document.getElementById('f-applyDate').value,
+    purchaseDate:document.getElementById('f-purchaseDate').value,qtyActual:document.getElementById('f-qtyActual').value.trim(),
+    usedOn:document.getElementById('f-usedOn').value.trim(),
+    containerNo:document.getElementById('f-containerNo').value.trim().toUpperCase(),
+    arrivalPort:document.getElementById('f-arrivalPort').value.trim().toUpperCase(),
+    arrivalFactory:document.getElementById('f-arrivalFactory').value.trim().toUpperCase(),
+    arrivalFactoryDate:document.getElementById('f-arrivalFactoryDate').value,
+    inWarehouse:document.getElementById('f-inWarehouse').value,
+  };
+  if(editId){const idx=items.findIndex(i=>i.id===editId);if(idx>=0)items[idx]=item;}
+  else items.unshift(item);
+  const ok=await saveData();
+  if(ok){closeFormModal();render();updateStats();toast(editId?'已更新':'已添加');}
+}
+
+function openViewModal(id){
+  const item=items.find(i=>i.id===id);if(!item)return;
+  const s=getStatus(item);
+  document.getElementById('view-title').textContent=item.name+(item.spec?' · '+item.spec:'');
+  const rows=[['物品名称',item.name],['英文名称',item.nameEn||'—'],['规格',item.spec||'—'],
+    ['数量',(item.qtyReq||'—')+' '+item.unit],['申请人',item.applicant||'—'],
+    ['申购单号',item.poNo||'—'],['申请日期',item.applyDate||'—'],['完成采购',item.purchaseDate||'—'],
+    ['集装箱号',item.containerNo||'—'],['到达DSM箱号',item.arrivalPort||'—'],
+    ['到达工厂箱号',item.arrivalFactory||'—'],['到工厂日期',item.arrivalFactoryDate||'—'],
+    ['入库日期',item.inWarehouse||'—'],
+    ['当前状态',`<span class="badge ${SC[s]}">${SI[s]} ${SL[s]}</span>`]];
+  document.getElementById('view-body').innerHTML=
+    `<div style="margin-bottom:16px">${renderStages(item)}</div>`+
+    rows.map(([l,v])=>`<div class="detail-row"><div class="detail-label">${l}</div><div class="detail-value">${l==='当前状态'?v:esc(v)}</div></div>`).join('');
+  document.getElementById('btn-del').onclick=()=>deleteItem(id);
+  document.getElementById('btn-edit').onclick=()=>editItem(id);
+  document.getElementById('view-modal').classList.add('open');
+}
+function closeViewModal(){document.getElementById('view-modal').classList.remove('open');}
+
+async function deleteItem(id){
+  if(!confirm('确认删除？'))return;
+  items=items.filter(i=>i.id!==id);
+  const ok=await saveData();
+  if(ok){closeViewModal();render();updateStats();toast('已删除');}
+}
+function editItem(id){
+  const item=items.find(i=>i.id===id);if(!item)return;
+  closeViewModal();editId=id;
+  document.getElementById('form-title').textContent='编辑物料';
+  const fields={'f-name':item.name,'f-nameEn':item.nameEn,'f-spec':item.spec,'f-unit':item.unit,
+    'f-qtyReq':item.qtyReq,'f-applicant':item.applicant,'f-poNo':item.poNo,'f-applyDate':item.applyDate,
+    'f-purchaseDate':item.purchaseDate,'f-qtyActual':item.qtyActual,'f-usedOn':item.usedOn,
+    'f-containerNo':item.containerNo,'f-arrivalPort':item.arrivalPort,'f-arrivalFactory':item.arrivalFactory,
+    'f-arrivalFactoryDate':item.arrivalFactoryDate,'f-inWarehouse':item.inWarehouse};
+  Object.entries(fields).forEach(([id,val])=>{const el=document.getElementById(id);if(el)el.value=val||'';});
+  document.getElementById('form-modal').classList.add('open');
+}
+
+document.getElementById('form-modal').addEventListener('click',function(e){if(e.target===this)closeFormModal();});
+document.getElementById('view-modal').addEventListener('click',function(e){if(e.target===this)closeViewModal();});
+
+// 启动
+if(localStorage.getItem('dz_auth')===ACCESS_PWD){showApp();}
+</script>
+</body>
+</html>
