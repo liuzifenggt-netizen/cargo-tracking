@@ -3693,28 +3693,7 @@
       "arrivalFactory": "",
       "arrivalFactoryDate": "",
       "inWarehouse": ""
-    },
-    {
-      "id": 178,
-      "name": "èèé³",
-      "shipping": "",
-      "usedOn": "",
-      "nameEn": "",
-      "spec": "",
-      "unit": "ä¸ª",
-      "qtyReq": "20",
-      "applicant": "å®è¿å¯¼",
-      "poNo": "02873",
-      "applyDate": "2026-03-31",
-      "purchaseDate": "",
-      "qtyActual": "",
-      "unitPrice": "",
-      "containerNo": "",
-      "arrivalPort": "",
-      "arrivalFactory": "",
-      "arrivalFactoryDate": "",
-      "inWarehouse": ""
     }
   ],
-  "lastUpdated": "2026-04-10T15:04:43.432Z"
+  "lastUpdated": "2026-04-10T15:23:40.874Z"
 }
